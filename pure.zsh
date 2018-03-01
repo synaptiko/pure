@@ -109,7 +109,7 @@ prompt_pure_preprompt_render() {
 	local -a preprompt_parts
 
 	# Set the path.
-	preprompt_parts+=('%F{blue}%~%f')
+	preprompt_parts+=('%B%F{blue}%~%f%b')
 
 	# Add git branch and dirty status info.
 	typeset -gA prompt_pure_vcs_info
@@ -118,13 +118,13 @@ prompt_pure_preprompt_render() {
 	fi
 	# Git pull/push arrows.
 	if [[ -n $prompt_pure_git_arrows ]]; then
-		preprompt_parts+=('%F{cyan}${prompt_pure_git_arrows}%f')
+		preprompt_parts+=('%B%F{blue}${prompt_pure_git_arrows}%f%b')
 	fi
 
 	# Username and machine, if applicable.
 	[[ -n $prompt_pure_username ]] && preprompt_parts+=('$prompt_pure_username')
 	# Execution time.
-	[[ -n $prompt_pure_cmd_exec_time ]] && preprompt_parts+=('%F{yellow}${prompt_pure_cmd_exec_time}%f')
+	[[ -n $prompt_pure_cmd_exec_time ]] && preprompt_parts+=('%F{238}${prompt_pure_cmd_exec_time}%f')
 
 	local cleaned_ps1=$PROMPT
 	local -H MATCH MBEGIN MEND
@@ -458,14 +458,14 @@ prompt_pure_setup() {
 	# show username@host if logged in through SSH
 	[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%F{242}%n@%m%f'
 
-	# show username@host if root, with username in white
-	[[ $UID -eq 0 ]] && prompt_pure_username='%F{white}%n%f%F{242}@%m%f'
+	# show username@host if root, with username in red
+	[[ $UID -eq 0 ]] && prompt_pure_username='%F{red}%n%f%F{242}@%m%f'
 
 	# if a virtualenv is activated, display it in grey
 	PROMPT='%(12V.%F{242}%12v%f .)'
 
 	# prompt turns red if the previous command didn't exit with 0
-	PROMPT+='%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
+	PROMPT+='%B%(?.%F{green}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f%b '
 }
 
 prompt_pure_setup "$@"
